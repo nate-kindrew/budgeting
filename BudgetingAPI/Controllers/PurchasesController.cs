@@ -15,8 +15,15 @@ public class PurchasesController : ControllerBase
     }
 
     [HttpGet]
-    public List<Purchase> Get(){
-        return _db.Purchases.Include("Store").Include("Budget").OrderByDescending(p => p.CreatedDate).Take(25).ToList();
+    [Route("List")]
+    public List<Purchase> List(){
+        BudgetingPeriod period = _db.BudgetingPeriods.Include("Purchases.Store").Include("Purchases.Budget").FirstOrDefault(bp => bp.StartDate < DateTime.Now && DateTime.Now <= bp.EndDate);
+        
+        if(period != null){
+            return period.Purchases.OrderByDescending(p => p.CreatedDate).Take(25).ToList();
+        } else {
+            return new List<Purchase>();
+        }
     }
 
     [HttpPost]

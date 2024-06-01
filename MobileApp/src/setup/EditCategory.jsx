@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import Loading from "../components/Loading";
 import Header from "../components/Header";
 import { DatePicker } from "@mui/x-date-pickers";
+import dayjs from 'dayjs';
 
 export default function EditCategory () {
     let urlParams = useParams();
@@ -32,14 +33,19 @@ export default function EditCategory () {
 const Editor = ({ category }) => {
     const [categoryName, setCategoryName] = useState(category.Name);
     const [categoryAmount, setCategoryAmount] = useState(category.Amount);
-    const [recurring, setRecurring] = useState(category.Recurring);
-    const [recurrenceDate, setRecurrenceDate] = useState(category.RecurrenceDate);
+    const [recurring, setRecurring] = useState(category.IsRecurring);
+    const [recurrenceDate, setRecurrenceDate] = useState(dayjs(category.RecurrenceDate));
 
     const mutateCategory = useMutateCategory();
     
     const save = () => {
-        mutateCategory.mutate({ BudgetingCategoryId: category.BudgetingCategoryId ? category.BudgetingCategoryId : 0, Name: categoryName, Amount: categoryAmount, IsRecurring: recurring == "on", RecurrenceDate: recurrenceDate?.toDate() },
-            {
+        mutateCategory.mutate({ 
+            BudgetingCategoryId: category.BudgetingCategoryId ? category.BudgetingCategoryId : 0,
+            Name: categoryName,
+            Amount: categoryAmount,
+            IsRecurring: recurring,
+            RecurrenceDate: recurrenceDate?.toDate()
+        }, {
                 onSuccess: () => {
                     window.location = "/setup/categories";
                 },
@@ -60,7 +66,9 @@ const Editor = ({ category }) => {
                     setCategoryAmount(event.target.value)
                 }} label="Amount" />
                 <Divider />
-                <FormControlLabel control={<Checkbox />} label="Recurring?" value={recurring} onChange={evt => setRecurring(evt.target.value)} />
+                <FormControlLabel control={<Checkbox />} label="Recurring?" value={recurring} onChange={evt => {
+                    setRecurring(evt.target.checked)
+                }} />
                 <Divider />
                 <DatePicker value={recurrenceDate} onChange={val => setRecurrenceDate(val)} label="Recurrence Date" />
             </CardContent>

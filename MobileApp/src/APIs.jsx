@@ -133,7 +133,7 @@ export const CreatePurchase = (purchase) => {
 }
 
 export const GetPurchases = () => {
-    return Get("Purchases");
+    return Get("Purchases/List");
 }
 
 /* ----------------------------------------------------------------------------- */

@@ -1,22 +1,11 @@
-
-
-
-
-
-
-
-SOURCE CONTROL - SET IT UP
-
-
-
-
-
-
-
 --pick budgeting period when purchase gets creted
-purchase list - top 50 from the current budgeting period
+--purchase list - top 50 from the current budgeting period
 --add note field for entry
 --add dividers in entry form
-add more detail to purchase list
+--add more detail to purchase list
 continue with thought that categories have recurring schedules
     eventually need logic to find categories that fall into the current budgeting period
+home screen as dashboard
+    show progress bars relative to budgets
+
+ERROR HANDLING

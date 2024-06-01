@@ -11,12 +11,14 @@ import Save from "@mui/icons-material/Save";
 export default function Entry() {
     const { data: stores, isLoading: storesLoading } = useGetStores();
     const { data: categories, isLoading: categoriesLoading } = useGetCategories();
-    const { data: currentPeriod, isLoading: currentPeriodLoading } = useCurrentBudgetingPeriod();
-    // const { data: purchases, isLoading: purchasesLoading } = useGetPurchases();
+    // const { data: currentPeriod, isLoading: currentPeriodLoading } = useCurrentBudgetingPeriod();
+    
+    const { data: purchases, isLoading: purchasesLoading } = useGetPurchases();
     const [store, setStore] = useState("");
     const [category, setCategory] = useState("");
     const [amount, setAmount] = useState("");
     const [note, setNote] = useState("");
+    const [purchaseId, setPurchaseId] = useState(0);
     
     const mutatePurchase = useMutatePurchase();
     
@@ -26,7 +28,8 @@ export default function Entry() {
         //     Store: stores.find(s => s.StoreId == store),
         //     Budget: categories.find(c => c.BudgetingCategoryId == category)
         // })
-        mutatePurchase.mutate({ 
+        mutatePurchase.mutate({
+            PurchaseId: purchaseId, 
             Amount: amount,
             Store: stores.find(s => s.StoreId == store),
             Budget: categories.find(c => c.BudgetingCategoryId == category),
@@ -45,7 +48,15 @@ export default function Entry() {
         setNote("");
     }
 
-    if(storesLoading || categoriesLoading || currentPeriodLoading){
+    const onSelect = (purchase) => {
+        setPurchaseId(purchase.PurchaseId);
+        setStore(purchase.Store.StoreId);
+        setCategory(purchase.Budget.BudgetingCategoryId);
+        setAmount(purchase.Amount);
+        setNote(purchase.Note);
+    }
+
+    if(storesLoading || categoriesLoading || purchasesLoading){
         return (
             <Loading />
         );
@@ -121,8 +132,8 @@ export default function Entry() {
             </Card>
             <Card>
                 <CardContent>
-                    {currentPeriod.Purchases.map(purchase => 
-                        <Purchase purchase={purchase} />
+                    {purchases.map((purchase, idx) => 
+                        <Purchase purchase={purchase} onClick={onSelect} key={idx} />
                     )}
                 </CardContent>
             </Card>
