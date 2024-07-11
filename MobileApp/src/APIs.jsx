@@ -136,6 +136,10 @@ export const GetPurchases = () => {
     return Get("Purchases/List");
 }
 
+export const GetCategoriesGroupedInPeriod = () => {
+    return Get("Categories/GroupedInPeriod");
+}
+
 /* ----------------------------------------------------------------------------- */
 
 export const useGetCategories = () => {
@@ -241,5 +245,12 @@ export const useGetPurchases = () => {
     return useQuery({
         queryKey: ['Purchases'],
         queryFn: GetPurchases
+    })
+}
+
+export const useGetCategoriesGroupedInPeriod = () => {
+    return useQuery({
+        queryKey: ['GetCategoriesGroupedInPeriod'],
+        queryFn: GetCategoriesGroupedInPeriod
     })
 }

@@ -1,5 +1,6 @@
 using System.Data.Common;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -44,5 +45,23 @@ public class CategoriesController : ControllerBase
             });
             _db.SaveChanges();
         }
+    }
+
+    
+    
+    [HttpGet]
+    [Route("GroupedInPeriod")]
+    public List<BudgetSummary> GroupedInPeriod(){
+        BudgetingPeriod period = _db.BudgetingPeriods.Include("Purchases.Budget").FirstOrDefault(bp => bp.StartDate < DateTime.Now && DateTime.Now <= bp.EndDate);
+        return _db.Purchases
+            .Include("Budget")
+            .Where(p => p.BudgetingPeriodId == period.BudgetingPeriodId)
+            .GroupBy(p => p.Budget.Name)
+            .Select(p => new BudgetSummary(){
+                BudgetName = p.Key,
+                PurchaseCount = p.Count(),
+                TotalAmount = p.Sum(purchase => purchase.Amount),
+                BudgetedAmount = p.First().Budget.Amount
+            }).ToList();
     }
 }

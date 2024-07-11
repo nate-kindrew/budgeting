@@ -29,12 +29,45 @@ body {
   }
 }
 
-.content {
-  // padding: 0 20px;
-}
-
 .bottom-action {
   position: sticky !important;
   bottom: 72px;
   left: 90%;
+}
+
+.progress {
+  height: 40px;
+  width: 100%;
+  border-radius: 20px;
+  border: 1px solid #42f569;
+  margin: 8px 0 16px;
+  background: repeating-linear-gradient(45deg, #fff, #fff 12px, #42f569 15px);
+
+
+  label {
+    font-weight: bold;
+  }
+
+  .bar {
+    background: #42f569;
+    border-radius: 20px;
+    
+    label {
+      color: #fff;
+      line-height: 40px;
+      width: 100%;
+      text-align: center;
+      display: block;
+    }
+  }
+  &.over {
+    border-color: #ba3b2d !important;
+   .bar{
+      background: #ba3b2d !important;
+    }
+  }
+}
+
+a {
+  color: #24aee0 !important;
 }
