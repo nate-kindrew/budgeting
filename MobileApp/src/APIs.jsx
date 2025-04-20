@@ -140,6 +140,10 @@ export const GetCategoriesGroupedInPeriod = () => {
     return Get("Categories/GroupedInPeriod");
 }
 
+export const GetRecurringCategoriesPaid = () => {
+    return Get("Categories/RecurringCategoriesPaid");
+}
+
 /* ----------------------------------------------------------------------------- */
 
 export const useGetCategories = () => {
@@ -252,5 +256,12 @@ export const useGetCategoriesGroupedInPeriod = () => {
     return useQuery({
         queryKey: ['GetCategoriesGroupedInPeriod'],
         queryFn: GetCategoriesGroupedInPeriod
+    })
+}
+
+export const useGetRecurringCategoriesPaid = () => {
+    return useQuery({
+        queryKey: ['GetRecurringCategoriesPaid'],
+        queryFn: GetRecurringCategoriesPaid
     })
 }

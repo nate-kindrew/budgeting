@@ -64,4 +64,36 @@ public class CategoriesController : ControllerBase
                 BudgetedAmount = p.First().Budget.Amount
             }).ToList();
     }
+
+    [HttpGet]
+    [Route("RecurringCategories")]
+    public List<BudgetingCategory> RecurringCategories() {
+        List<BudgetingCategory> categories = _db.BudgetingCategories.Where(bc => bc.IsRecurring).ToList();
+        return categories;
+    }
+
+    [HttpGet]
+    [Route("RecurringCategoriesPaid")]
+    public List<BudgetingCategory> RecurringCategoriesPaid() {
+        BudgetingPeriod period = _db.BudgetingPeriods.FirstOrDefault(bp => bp.StartDate < DateTime.Now && DateTime.Now <= bp.EndDate);
+        List<BudgetingCategory> categories = _db.BudgetingCategories.Where(bc => bc.IsRecurring).Select(bc => new BudgetingCategory() {
+            BudgetingCategoryId = bc.BudgetingCategoryId,
+            Name = bc.Name,
+            Amount = bc.Amount,
+            IsRecurring = bc.IsRecurring,
+            RecurrenceDate = new DateTime(DateTime.Now.Year, bc.RecurrenceDate.Value.Day > period.EndDate.Day ? period.StartDate.Month : period.EndDate.Month, bc.RecurrenceDate.Value.Day)
+        }).ToList();
+        
+        // List<BudgetingCategory> categories = 
+        //     _db.BudgetingCategories.Where(bc => 
+        //         bc.RecurrenceDate.HasValue && 
+        //         (
+        //             period.StartDate.Day <= bc.RecurrenceDate.Value.Day && // after the beginning of the period
+        //             period.StartDate.Month
+        //         ) &&
+        //         period.EndDate.Day >= bc.RecurrenceDate.Value.Day && // before the end of the period
+        //         bc.RecurrenceDate.Value.Day >= DateTime.Now.Day // after or on today
+        //     ).ToList();
+        return categories;
+    }
 }

@@ -3,9 +3,19 @@
 --add note field for entry
 --add dividers in entry form
 --add more detail to purchase list
-continue with thought that categories have recurring schedules
-    eventually need logic to find categories that fall into the current budgeting period
+--continue with thought that categories have recurring schedules
+    --eventually need logic to find categories that fall into the current budgeting period
+    is it worth changing the budgetingperiod recurrencedate to be just an int representing the day of the month on which that thing recurrs?
+setup screen for income
+    is this a separate table?
+    or is this an extension of the budgeting period?
 home screen as dashboard
-    show progress bars relative to budgets
+    --show progress bars relative to budgets
+    --build own progress bar
+        --label for amount in bar itself
+        --color change if over/under budget
+        --max amount to right
+        onClick handler (will link to purchases in category)
+    show $ accounted for so far vs income
 
 ERROR HANDLING
